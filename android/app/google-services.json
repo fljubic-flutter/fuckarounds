@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "784790771181",
+    "firebase_url": "https://fuckarounds.firebaseio.com",
+    "project_id": "fuckarounds",
+    "storage_bucket": "fuckarounds.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784790771181:android:08853f688103a9681783e4",
+        "android_client_info": {
+          "package_name": "com.fljubic.fuckarounds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784790771181-47l73cr9kpgoug417stj2pqtrcvhnn3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLE5CZONQq_r4kwfJ1h_R3dzy1hEdXkbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784790771181-47l73cr9kpgoug417stj2pqtrcvhnn3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
