@@ -54,7 +54,9 @@ class MyHomePageState extends State<MyHomePage> {
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
     VisionText readText = await recognizeText.processImage(ourImage);
 
-    translate(readText.text);
+    translate(readText.text.split('\n').where((element) {
+      return element != "\$";
+    }).join(' '));
   }
 
   void translate(String readText) async {
@@ -76,36 +78,39 @@ class MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Column(
-          children: <Widget>[
-            _isImageLoaded
-                ? Center(
-                    child: Container(
-                      height: 200.0,
-                      width: 200.0,
-                      decoration: BoxDecoration(
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              _isImageLoaded
+                  ? Center(
+                      child: Container(
+                        height: 500.0,
+                        width: 400.0,
+                        decoration: BoxDecoration(
                           image: DecorationImage(
                               image: FileImage(File(_pickedImage.path)),
-                              fit: BoxFit.cover)),
-                    ),
-                  )
-                : Container(),
-            _isTextLoaded ? Center(child: Text(_text)) : Container(),
-            SizedBox(
-              height: 10.0,
-            ),
-            RaisedButton(
-              child: Text('Choose an image'),
-              onPressed: pickImage,
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            RaisedButton(
-              child: Text('Read Text'),
-              onPressed: readText,
-            ),
-          ],
+                              fit: BoxFit.scaleDown),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              _isTextLoaded ? Center(child: Text(_text)) : Container(),
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                child: Text('Choose an image'),
+                onPressed: pickImage,
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                child: Text('Read Text'),
+                onPressed: readText,
+              ),
+            ],
+          ),
         ));
   }
 }
