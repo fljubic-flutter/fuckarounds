@@ -34,13 +34,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  File _pickedImage;
+  PickedFile _pickedImage;
   bool _isImageLoaded = false;
   bool _isTextLoaded = false;
   String _text = "";
 
   Future pickImage() async {
-    var tempStore = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var tempStore = await ImagePicker().getImage(source: ImageSource.gallery);
 
     setState(() {
       _pickedImage = tempStore;
@@ -49,7 +49,8 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Future readText() async {
-    FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(_pickedImage);
+    FirebaseVisionImage ourImage =
+        FirebaseVisionImage.fromFile(File(_pickedImage.path));
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
     VisionText readText = await recognizeText.processImage(ourImage);
 
@@ -62,7 +63,7 @@ class MyHomePageState extends State<MyHomePage> {
     String input = readText;
 
     translator
-        .translate(input, to: 'pt')
+        .translate(input, to: 'hr')
         .then((_translatedText) => setState(() {
               _text = _translatedText.text;
               _isTextLoaded = true;
@@ -84,7 +85,7 @@ class MyHomePageState extends State<MyHomePage> {
                       width: 200.0,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: FileImage(_pickedImage),
+                              image: FileImage(File(_pickedImage.path)),
                               fit: BoxFit.cover)),
                     ),
                   )
