@@ -1,4 +1,4 @@
-# fuckarounds
+# snippets
 
 A new Flutter project.
 
