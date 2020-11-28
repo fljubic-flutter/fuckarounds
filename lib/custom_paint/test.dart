@@ -42,10 +42,6 @@ class FaceOutlinePainter extends CustomPainter {
       ..strokeWidth = 4.0
       ..color = Colors.indigo;
 
-    final redFill = Paint()
-      ..style = PaintingStyle.fill
-      ..color = Colors.red;
-
     canvas.drawRect(Rect.fromLTWH(20.0, 40.0, 100.0, 100.0),
         paint); // draws normal rectangle in top left corner
 
