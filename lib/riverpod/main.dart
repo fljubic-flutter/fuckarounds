@@ -87,7 +87,7 @@ class MyCounterApp extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // TODO: ovaj dio di ne mozemo watchat
+            // ovaj dio di ne mozemo watchat
             context.read(incrementProvider).increment();
           },
           child: Icon(Icons.add),

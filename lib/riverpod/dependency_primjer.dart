@@ -18,10 +18,10 @@ class FakeHttpClient {
 
 final fakeHttpClientProvider = Provider((ref) => FakeHttpClient());
 final responseProvider =
-    FutureProvider.family<String, String>((ref, input_url) async {
+    FutureProvider.family<String, String>((ref, inputUrl) async {
   final httpClient = ref.read(fakeHttpClientProvider);
   // watch() ako mislimo da ce se promjenit
-  return httpClient.get(input_url);
+  return httpClient.get(inputUrl);
 });
 // jedino zas je futureprovider drukciji je da ima async
 
