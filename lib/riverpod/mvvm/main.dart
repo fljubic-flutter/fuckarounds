@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fuckarounds/riverpod/mvvm/joke_view_model.dart';
 import 'joke_model.dart';
+import 'package:hooks_riverpod/all.dart';
 
 /// sta zapravo zelim isprobati s ovime:
 /// -kako napraviti mvvm s Riverpodom
@@ -18,11 +19,32 @@ void main() async {
   );
 }
 
-final jokeViewModelProvider = ChangeNotifierProvider((ref) => JokeViewModel());
+final buttonProvider = StateProvider<bool>((ref) {
+  return false;
+});
 
-class MyApp extends StatelessWidget {
+final jokeViewModelProvider = FutureProvider<JokeSingle>((ref) async {
+  return JokeViewModel.getDadJoke();
+});
+
+final notJokeViewModelProvider = FutureProvider<JokeSingle>((ref) async {
+  final w = ref.watch(buttonProvider);
+
+  return JokeViewModel.getDadJoke();
+});
+
+class MyApp extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final dadJoke = useProvider(jokeViewModelProvider);
+    final otherDadJoke = useProvider(notJokeViewModelProvider);
+    final pressed = useProvider(buttonProvider);
+
+    String text = otherDadJoke.when(
+        data: (val) => "${val.text}",
+        loading: () => "loading",
+        error: (e, s) => "error");
+
     return MaterialApp(
       theme: ThemeData(
         primaryColor: const Color(0xFF6FD9E2),
@@ -34,21 +56,26 @@ class MyApp extends StatelessWidget {
       ),
       home: SafeArea(
         child: Scaffold(
-          body: Center(
-            child: Column(
-              children: [
-                Consumer(
-                  builder: (context, watch, child) {
-                    final jokeVM = watch(jokeViewModelProvider);
-                    return Text(jokeVM.dadJoke.text);
-                  },
-                ),
-                RaisedButton(onPressed: () {
-                  context.read(jokeViewModelProvider).getDadJoke();
-                })
-              ],
-            ),
-          ),
+          body: dadJoke.when(
+              loading: () => Center(child: const CircularProgressIndicator()),
+              error: (Object error, StackTrace stackTrace) {
+                return Center(child: Text("${error.toString()}"));
+              },
+              data: (JokeSingle value) {
+                return Column(
+                  children: [
+                    Center(
+                      child:
+                          pressed.state ? Text("$text") : Text("${value.text}"),
+                    ),
+                    RaisedButton(onPressed: () {
+                      print("dadJoke before pressed: ${value.text}");
+                      pressed.state = !pressed.state;
+                      print("dadJoke after pressed: ${value.text}");
+                    })
+                  ],
+                );
+              }),
         ),
       ),
     );

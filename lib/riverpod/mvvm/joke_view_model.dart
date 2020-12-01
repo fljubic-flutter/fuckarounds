@@ -4,23 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:fuckarounds/riverpod/mvvm/joke_model.dart';
 import 'package:http/http.dart' as http;
 
-class JokeViewModel extends ChangeNotifier {
-  JokeSingle dadJoke = JokeSingle(text: "Nothing yet!");
-
-  Future<JokeSingle> getDadJoke() async {
-    final http.Response response =
-        await http.get("https://icanhazdadjoke.com/");
+class JokeViewModel {
+  static Future<JokeSingle> getDadJoke() async {
+    final http.Response response = await http.get("https://icanhazdadjoke.com/",
+        headers: {"Accept": "application/json"});
 
     if (response.statusCode == 200) {
       final decode = jsonDecode(response.body);
 
-      dadJoke = JokeSingle(text: decode["joke"]);
-      print(dadJoke.text);
-
-      notifyListeners();
-      return dadJoke;
+      return JokeSingle(text: decode["joke"]);
     } else {
-      dadJoke = JokeSingle(
+      return JokeSingle(
         text: "No internet connection :(",
       );
     }
