@@ -5,9 +5,9 @@ import 'joke_model.dart';
 import 'package:hooks_riverpod/all.dart';
 
 /// sta zapravo zelim isprobati s ovime:
-/// -kako napraviti mvvm s Riverpodom
+/// -kako napraviti mvvm s Riverpodom simple easy fun dominion
 /// -ako se Provider ponasa kao singleton i ako ga onda moram
-/// inicijalizirati u jednom fileu i importati u svaki (vjv da)
+/// inicijalizirati u jednom fileu i importati u svaki (vjv da) yup
 /// - opcenito zelim skuziti kada se koji tip Providera koristi - StateProvider, StateNotifierProvider, ChangeNotifierProvider
 
 void main() async {
@@ -36,6 +36,7 @@ final notJokeViewModelProvider = FutureProvider<JokeSingle>((ref) async {
 class MyApp extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    print("Whole MyApp built");
     final dadJoke = useProvider(jokeViewModelProvider);
     final otherDadJoke = useProvider(notJokeViewModelProvider);
     final pressed = useProvider(buttonProvider);
@@ -71,7 +72,17 @@ class MyApp extends HookWidget {
                     RaisedButton(onPressed: () {
                       print("dadJoke before pressed: ${value.text}");
                       pressed.state = !pressed.state;
-                      print("dadJoke after pressed: ${value.text}");
+                    }),
+                    HookBuilder(builder: (context) {
+                      final number = useState(0);
+
+                      return RaisedButton(
+                        onPressed: () {
+                          number.value = number.value + 1;
+                          print("only part rebuilt");
+                        },
+                        child: Text(number.value.toString()),
+                      );
                     })
                   ],
                 );
